@@ -1,4 +1,4 @@
-class FetchExtension {
+  class FetchExtension {
     getInfo() {
       return {
         id: 'fetchExtension',
