@@ -49,5 +49,5 @@ const server = http.createServer((req, res) => {
 
 const port = 8080;
 server.listen(port, () => {
-  console.log(`Da server eating at : http://localhost:${port}/`);
+  console.log(`Server running at http://localhost:${port}/`);
 });
