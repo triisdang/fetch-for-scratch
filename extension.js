@@ -1,45 +1,40 @@
-  class FetchExtension {
-    getInfo() {
+class FetchExtension {
+  getInfo() {
       return {
-        id: 'fetchExtension',
-        name: 'Fetch Extension',
-        blocks: [
-          {
-            opcode: 'fetchData',
-            blockType: 'command',
-            text: 'FETCH url [URL] fetch what [QUERY] set fetch result to variable [VAR]',
-            arguments: {
-              URL: {
-                type: 'string',
-                defaultValue: 'https://api.example.com/your-url-here    '
-              },
-              QUERY: {
-                type: 'string',
-                defaultValue: 'data'
-              },
-              VAR: {
-                type: 'variable'
+          id: 'fetchExtension',
+          name: 'Fetch',
+          blocks: [
+              {
+                  opcode: 'fetchUrl',
+                  blockType: Scratch.BlockType.REPORTER, // REPORTER block is rounded
+                  text: 'FETCH url [URL] fetch what [DATA]',
+                  arguments: {
+                      URL: {
+                          type: Scratch.ArgumentType.STRING,
+                          defaultValue: 'https://jsonplaceholder.typicode.com/todos/1'
+                      },
+                      DATA: {
+                          type: Scratch.ArgumentType.STRING,
+                          defaultValue: 'title'
+                      }
+                  }
               }
-            }
-          }
-        ]
+          ]
       };
-    }
-  
-    fetchData(args, util) {
-      const url = args.URL;
-      const query = args.QUERY;
-      return fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          const result = data[query];
-          util.target.variables[args.VAR].value = result;
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-    }
   }
-  
-  Scratch.extensions.register(new FetchExtension());
-  
+
+  fetchUrl(args) {
+      const url = args.URL;
+      const dataKey = args.DATA;
+
+      return fetch(url)
+          .then(response => response.json())
+          .then(data => data[dataKey])
+          .catch(error => {
+              console.error('Error:', error);
+              return 'Error';
+          });
+  }
+}
+
+Scratch.extensions.register(new FetchExtension());
